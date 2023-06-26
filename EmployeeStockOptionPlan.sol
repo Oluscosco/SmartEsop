@@ -22,17 +22,17 @@ contract EmployeeStockOptionPlan {
     
     mapping(address => Employee) private employees;  
 
-    event StockOptionsGranted(address indexed employee, uint256 amount); //The Stock Options Granted event
-    event VestingScheduleSet(address indexed employee, uint256 start, uint256 duration); // The Vesting Schedule event
-    event OptionsExercised(address indexed employee, uint256 amount); // The Options Exercised event
-    event OptionsTransferred(address indexed from, address indexed to, uint256 amount); // The Options Transferred event    
+    event StockOptionsGranted(address indexed employee, uint256 amount); //The Stock OptionsGranted event
+    event VestingScheduleSet(address indexed employee, uint256 start, uint256 duration); // The VestingSchedule event
+    event OptionsExercised(address indexed employee, uint256 amount); // The OptionsExercised event
+    event OptionsTransferred(address indexed from, address indexed to, uint256 amount); // The OptionsTransferred event    
     modifier onlyOwner() {
-        require(msg.sender == owner, "Only the contract owner can call this function.");
+        require(msg.sender == owner, "Only the contract owner can call this function. Contact Zarttech's HR");
         _;
     }
     
     modifier onlyEmployee() {
-        require(employees[msg.sender].grantAmount > 0, "You are not an authorized employee.");
+        require(employees[msg.sender].grantAmount > 0, "You are not an authorized employee of Zarttech.");
         _;
     }
     
@@ -58,7 +58,7 @@ contract EmployeeStockOptionPlan {
      * @param duration The vesting duration in seconds.
      */
     function setVestingSchedule(address employee, uint256 start, uint256 duration) external onlyOwner {
-        require(employees[employee].grantAmount > 0, "Employee does not have any granted options.");
+        require(employees[employee].grantAmount > 0, "Employee does not have any granted options. Please contact the HR");
         employees[employee].vestingStart = start;
         employees[employee].vestingDuration = duration;
         emit VestingScheduleSet(employee, start, duration);
@@ -100,7 +100,7 @@ contract EmployeeStockOptionPlan {
         Employee storage toEmployee = employees[to];
         
         require(fromEmployee.vestedAmount >= amount, "Insufficient vested options.");
-        require(toEmployee.transferTo == address(0), "The receiver is not eligible to receive options.");
+        require(toEmployee.transferTo == address(0), "The receiver is not eligible to receive options. Please check properly");
         
         fromEmployee.vestedAmount -= amount;
         toEmployee.vestedAmount += amount;
